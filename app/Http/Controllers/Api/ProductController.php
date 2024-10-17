@@ -11,9 +11,22 @@ use Illuminate\Support\Str;
 class ProductController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with(['category', 'quantityType'])->get();
+        $query = Product::with(['category', 'quantityType']);
+
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->input('category_id'));
+        }
+
+        if ($request->has('sort_by')) {
+            $sortBy = $request->input('sort_by');
+            if (in_array($sortBy, ['mrp', 'selling_price'])) {
+                $query->orderBy($sortBy, $request->input('order', 'asc'));
+            }
+        }
+
+        $products = $request->has('per_page') ? $query->paginate($request->input('per_page')) : $query->get();
         return response()->json($products);
     }
 

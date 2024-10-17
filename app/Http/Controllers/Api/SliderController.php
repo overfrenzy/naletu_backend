@@ -9,9 +9,13 @@ use Illuminate\Support\Facades\Storage;
 
 class SliderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $sliders = Slider::all();
+        $query = Slider::query();
+        if ($request->has('type')) {
+            $query->where('type', $request->input('type'));
+        }
+        $sliders = $query->get();
         return response()->json($sliders);
     }
 

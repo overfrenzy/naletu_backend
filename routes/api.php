@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SliderController;
+use App\Http\Controllers\Api\QuantityTypeController;
 
 // Публичные api (категории, продукты, слайдеры, тип продукта)
 

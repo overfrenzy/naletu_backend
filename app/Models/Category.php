@@ -5,19 +5,21 @@ namespace App\Models;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class Category extends Model
 {
-    protected $fillable = ['name', 'image'];
+    protected $fillable = ['name', 'image', 'slug'];
 
     protected static function boot()
     {
         parent::boot();
 
-        // Автоматически создавать идентифайер перед сохранением
+        // Автоматически создавать slug перед сохранением
         static::saving(function ($category) {
             if (empty($category->slug)) {
-                $category->slug = Str::slug($category->name);
+                $slug = Str::slug($category->name);
+                $category->slug = static::generateUniqueSlug($slug);
             }
         });
 
@@ -36,18 +38,38 @@ class Category extends Model
             }
         });
     }
-    
+
+    /**
+     * Создать уникальный slug, добавив цифру, если slug уже существует.
+     *
+     * @param string $slug
+     * @return string
+     */
+    public static function generateUniqueSlug($slug)
+    {
+        $originalSlug = $slug;
+        $count = 1;
+
+        // проверить, если slug уже в таблице продуктов
+        while (DB::table('categories')->where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $count;
+            $count++;
+        }
+
+        return $slug;
+    }
+
     public function getImageUrlAttribute()
     {
         return $this->image ? asset('storage/' . ltrim($this->image, '/')) : null;
     }
-    
+
     public function setImageAttribute($value)
     {
         if ($value) {
             $this->attributes['image'] = ltrim(str_replace('public/', '', $value), '/');
         }
-    }    
+    }
 
     // Реляция с продуктами
     public function products()

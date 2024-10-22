@@ -33,6 +33,9 @@ class SliderResource extends Resource
                     ->required()
                     ->label('Название Слайдера'),
 
+                TextInput::make('special')
+                    ->label('Ссылка на Специальное'),
+
                 FileUpload::make('image')
                     ->disk('public')
                     ->directory('slider-images')

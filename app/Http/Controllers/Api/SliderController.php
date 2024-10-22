@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class SliderController extends Controller
 {
+    
     public function index(Request $request)
     {
         $query = Slider::query();

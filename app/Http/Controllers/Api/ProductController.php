@@ -13,12 +13,23 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
+        // Учитывать отношения категории и количества.
         $query = Product::with(['category', 'quantityType']);
 
+        // Фильтровать по Category_id, если он указан.
         if ($request->has('category_id')) {
             $query->where('category_id', $request->input('category_id'));
         }
 
+        // Фильтровать по slug, если он указан
+        if ($request->has('category_slug')) {
+            $categorySlug = $request->input('category_slug');
+            $query->whereHas('category', function ($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            });
+        }
+
+        // Применить сортировку на основе параметра sort_by
         if ($request->has('sort_by')) {
             $sortBy = $request->input('sort_by');
             if (in_array($sortBy, ['mrp', 'selling_price'])) {
@@ -26,9 +37,12 @@ class ProductController extends Controller
             }
         }
 
+        // Разбивка на страницы или возврат всех продуктов на основе параметра per_page.
         $products = $request->has('per_page') ? $query->paginate($request->input('per_page')) : $query->get();
+
         return response()->json($products);
     }
+
 
     public function store(Request $request)
     {

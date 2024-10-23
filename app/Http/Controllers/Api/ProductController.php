@@ -52,7 +52,7 @@ class ProductController extends Controller
             'mrp' => 'required|numeric',
             'selling_price' => 'nullable|numeric',
             'category_id' => 'required|exists:categories,id',
-            'quantity_type_id' => 'required|exists:quantity_types,id',
+            'quantity_type_id' => 'nullable|exists:quantity_types,id',
             'image' => 'nullable|file|image|max:2048',
         ]);
 

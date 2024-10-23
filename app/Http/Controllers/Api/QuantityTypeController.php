@@ -47,7 +47,18 @@ class QuantityTypeController extends Controller
     public function destroy(string $id)
     {
         $quantityType = QuantityType::findOrFail($id);
-        $quantityType->delete();
+
+        // Check if the quantity type is associated with any products
+        $productsCount = $quantityType->products()->count();
+
+        if ($productsCount > 0) {
+            // Prevent deletion
+            return response()->json([
+                'message' => 'Cannot delete quantity type because it is associated with products.'
+            ], 400);
+        } else {
+            $quantityType->delete();
+        }
 
         return response()->json(null, 204);
     }

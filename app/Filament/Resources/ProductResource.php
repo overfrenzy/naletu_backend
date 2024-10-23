@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Product;
+use App\Models\QuantityType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\FileUpload;
@@ -50,7 +51,7 @@ class ProductResource extends Resource
                     Select::make('quantity_type_id')
                         ->label('Количество')
                         ->relationship('quantityType', 'name')
-                        ->required()
+                        ->nullable()
                         ->searchable()
                         ->preload()
                         ->createOptionForm(function (Form $form) {

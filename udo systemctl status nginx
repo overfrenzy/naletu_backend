@@ -1,0 +1,16 @@
+[0;1;32m●[0m php8.2-fpm.service - The PHP 8.2 FastCGI Process Manager
+     Loaded: loaded (/lib/systemd/system/php8.2-fpm.service; enabled; vendor preset: enabled)
+     Active: [0;1;32mactive (running)[0m since Wed 2024-10-23 10:13:11 MSK; 13s ago
+       Docs: man:php-fpm8.2(8)
+    Process: 403084 ExecStartPost=/usr/lib/php/php-fpm-socket-helper install /run/php/php-fpm.sock /etc/php/8.2/fpm/pool.d/www.conf 82 (code=exited, status=0/SUCCESS)
+   Main PID: 403081 (php-fpm8.2)
+     Status: "Processes active: 0, idle: 2, Requests: 0, slow: 0, Traffic: 0.00req/sec"
+      Tasks: 3 (limit: 154490)
+     Memory: 9.9M
+     CGroup: /system.slice/php8.2-fpm.service
+             ├─403081 php-fpm: master process (/etc/php/8.2/fpm/php-fpm.conf)
+             ├─403082 php-fpm: pool www
+             └─403083 php-fpm: pool www
+
+Oct 23 10:13:10 naletupizza systemd[1]: Starting The PHP 8.2 FastCGI Process Manager...
+Oct 23 10:13:11 naletupizza systemd[1]: Started The PHP 8.2 FastCGI Process Manager.

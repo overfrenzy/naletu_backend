@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 class Product extends Model
 {
     protected $fillable = [
-        'name', 
-        'description', 
-        'mrp', 
-        'selling_price', 
+        'name',
+        'description',
+        'mrp',
+        'selling_price',
         'image',
         'category_id',
         'quantity_type_id',
@@ -78,6 +78,11 @@ class Product extends Model
         if ($value) {
             $this->attributes['image'] = ltrim(str_replace('public/', '', $value), '/');
         }
+    }
+
+    public function getDisplayNameAttribute()
+    {
+        return $this->name . ($this->quantityType ? ' (' . $this->quantityType->name . ')' : '');
     }
 
     // Реляция с категорией

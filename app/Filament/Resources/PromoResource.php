@@ -22,11 +22,11 @@ class PromoResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
-    protected static ?string $navigationLabel = 'Promo Codes';
+    protected static ?string $navigationLabel = 'Промокоды';
 
-    protected static ?string $pluralLabel = 'Promo Codes';
+    protected static ?string $pluralLabel = 'Промокоды';
 
-    protected static ?string $label = 'Promo Code';
+    protected static ?string $label = 'Промокоды';
 
     public static function form(Form $form): Form
     {
@@ -34,18 +34,20 @@ class PromoResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->required()
-                    ->label('Promo Code Name'),
+                    ->label('Название промокода'),
 
                 TextInput::make('discount')
-                    ->required()
+                    ->nullable()
                     ->numeric()
                     ->minValue(1)
                     ->maxValue(100)
-                    ->label('Discount Percentage'),
+                    ->label('Скидка в %'),
 
                 Select::make('product_id')
-                    ->label('Product (Optional)')
-                    ->relationship('product', 'name')
+                    ->label('Бесплатный продукт')
+                    ->options(function () {
+                        return \App\Models\Product::all()->pluck('display_name', 'id');
+                    })
                     ->nullable()
                     ->searchable()
                     ->preload(),
@@ -53,7 +55,7 @@ class PromoResource extends Resource
                 TextInput::make('cart_total')
                     ->numeric()
                     ->nullable()
-                    ->label('Cart Total Threshold (Optional)'),
+                    ->label('Скидка только от ... рублей'),
             ]);
     }
 

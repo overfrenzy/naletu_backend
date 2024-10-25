@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('promos', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->unsignedInteger('discount');
+            $table->unsignedInteger('discount')->nullable();
             $table->foreignId('product_id')->nullable()->constrained();
-            $table->unsignedInteger('disccart_totalount')->nullable();
+            $table->unsignedInteger('cart_total')->nullable();
             $table->timestamps();
         });
     }

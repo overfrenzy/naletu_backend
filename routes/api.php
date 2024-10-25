@@ -13,3 +13,4 @@ Route::apiResource('categories', CategoryController::class);
 Route::apiResource('products', ProductController::class);
 Route::apiResource('sliders', SliderController::class);
 Route::apiResource('quantity-types', QuantityTypeController::class);
+Route::apiResource('promos', PromoController::class);

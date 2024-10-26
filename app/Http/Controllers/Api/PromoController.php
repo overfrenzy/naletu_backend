@@ -65,7 +65,9 @@ class PromoController extends Controller
         ]);
 
         // Преобразовать входные промокоды и промокоды базы данных в нижний регистр для соответствия без учета регистра.
-        $promo = Promo::whereRaw('LOWER(name) = ?', [strtolower($request->code)])->first();
+        $promo = Promo::whereRaw('LOWER(name) = ?', [strtolower($request->code)])
+            ->with('product.quantityType')
+            ->first();
 
         if (!$promo) {
             return response()->json(['message' => 'Promo code is expired or invalid'], 404);

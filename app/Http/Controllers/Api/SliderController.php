@@ -9,14 +9,9 @@ use Illuminate\Support\Facades\Storage;
 
 class SliderController extends Controller
 {
-    
-    public function index(Request $request)
+    public function index()
     {
-        $query = Slider::query();
-        if ($request->has('type')) {
-            $query->where('type', $request->input('type'));
-        }
-        $sliders = $query->get();
+        $sliders = Slider::all();
         return response()->json($sliders);
     }
 
@@ -24,24 +19,22 @@ class SliderController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|string|in:home,banner',
+            'description' => 'nullable|string',
             'image' => 'nullable|file|image|max:2048',
+            'image2' => 'nullable|file|image|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('slider-images', 'public');
-            $validated['image'] = $imagePath;
+            $validated['image'] = $request->file('image')->store('slider-images', 'public');
+        }
+
+        if ($request->hasFile('image2')) {
+            $validated['image2'] = $request->file('image2')->store('slider-images', 'public');
         }
 
         $slider = Slider::create($validated);
 
         return response()->json($slider, 201);
-    }
-
-    public function show(string $id)
-    {
-        $slider = Slider::findOrFail($id);
-        return response()->json($slider);
     }
 
     public function update(Request $request, string $id)
@@ -50,34 +43,27 @@ class SliderController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|string|in:home,banner',
+            'description' => 'nullable|string',
             'image' => 'nullable|file|image|max:2048',
+            'image2' => 'nullable|file|image|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
             if ($slider->image) {
                 Storage::disk('public')->delete($slider->image);
             }
+            $validated['image'] = $request->file('image')->store('slider-images', 'public');
+        }
 
-            $imagePath = $request->file('image')->store('slider-images', 'public');
-            $validated['image'] = $imagePath;
+        if ($request->hasFile('image2')) {
+            if ($slider->image2) {
+                Storage::disk('public')->delete($slider->image2);
+            }
+            $validated['image2'] = $request->file('image2')->store('slider-images', 'public');
         }
 
         $slider->update($validated);
 
         return response()->json($slider);
-    }
-
-    public function destroy(string $id)
-    {
-        $slider = Slider::findOrFail($id);
-        
-        if ($slider->image) {
-            Storage::disk('public')->delete($slider->image);
-        }
-
-        $slider->delete();
-
-        return response()->json(null, 204);
     }
 }

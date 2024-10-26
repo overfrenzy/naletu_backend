@@ -8,7 +8,6 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Select;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -33,8 +32,12 @@ class SliderResource extends Resource
                     ->required()
                     ->label('Название Слайдера'),
 
-                TextInput::make('special')
-                    ->label('Ссылка на Специальное'),
+                TextInput::make('slug')
+                    ->disabled()
+                    ->label('Slug'),
+
+                TextInput::make('description')
+                    ->label('Описание'),
 
                 FileUpload::make('image')
                     ->disk('public')
@@ -42,13 +45,11 @@ class SliderResource extends Resource
                     ->nullable()
                     ->label('Картинка'),
 
-                Select::make('type')
-                    ->options([
-                        'home' => 'Главная',
-                        'banner' => 'Баннер',
-                    ])
-                    ->required()
-                    ->label('Тип Слайдера'),
+                FileUpload::make('image2')
+                    ->disk('public')
+                    ->directory('slider-images')
+                    ->nullable()
+                    ->label('Картинка 2'),
             ]);
     }
 
@@ -62,11 +63,15 @@ class SliderResource extends Resource
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Картинка'),
 
-                Tables\Columns\TextColumn::make('type')
-                    ->label('Тип Слайдера'),
-            ])
-            ->filters([
-                //
+                Tables\Columns\ImageColumn::make('image2')
+                    ->label('Картинка 2'),
+
+                Tables\Columns\TextColumn::make('slug')
+                    ->label('Slug'),
+
+                Tables\Columns\TextColumn::make('description')
+                    ->label('Описание')
+                    ->limit(50),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -76,21 +81,5 @@ class SliderResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index'  => Pages\ListSliders::route('/'),
-            'create' => Pages\CreateSlider::route('/create'),
-            'edit'   => Pages\EditSlider::route('/{record}/edit'),
-        ];
     }
 }

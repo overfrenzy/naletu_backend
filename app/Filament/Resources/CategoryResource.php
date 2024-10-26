@@ -32,10 +32,10 @@ class CategoryResource extends Resource
                     ->label('Имя Категории'),
 
                     FileUpload::make('image')
+                    ->required()
                     ->disk('public') 
                     ->directory('category-images')
                     ->label('Картинка')
-                    ->nullable()
             ]);
     }
 

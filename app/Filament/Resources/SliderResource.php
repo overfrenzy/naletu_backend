@@ -37,9 +37,9 @@ class SliderResource extends Resource
                     ->label('Описание'),
 
                 FileUpload::make('image')
+                    ->required()
                     ->disk('public')
                     ->directory('slider-images')
-                    ->nullable()
                     ->label('Картинка'),
 
                 FileUpload::make('image2')
@@ -82,5 +82,20 @@ class SliderResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index'  => Pages\ListSliders::route('/'),
+            'create' => Pages\CreateSlider::route('/create'),
+            'edit'   => Pages\EditSlider::route('/{record}/edit'),
+        ];
     }
 }

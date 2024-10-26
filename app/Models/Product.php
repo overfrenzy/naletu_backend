@@ -96,4 +96,10 @@ class Product extends Model
     {
         return $this->belongsTo(QuantityType::class);
     }
+
+    // Реляция с избранными продуктами
+    public function featuredProduct()
+    {
+        return $this->hasOne(FeaturedProduct::class, 'product_id');
+    }
 }

@@ -48,11 +48,11 @@ class QuantityTypeController extends Controller
     {
         $quantityType = QuantityType::findOrFail($id);
 
-        // Check if the quantity type is associated with any products
+        // Проверить связан ли тип количества с какими-либо продуктами
         $productsCount = $quantityType->products()->count();
 
         if ($productsCount > 0) {
-            // Prevent deletion
+            // Запретить удаление
             return response()->json([
                 'message' => 'Cannot delete quantity type because it is associated with products.'
             ], 400);

@@ -57,4 +57,24 @@ class PromoController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function validatePromo(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+        ]);
+
+        // Преобразовать входные промокоды и промокоды базы данных в нижний регистр для соответствия без учета регистра.
+        $promo = Promo::whereRaw('LOWER(name) = ?', [strtolower($request->code)])->first();
+
+        if (!$promo) {
+            return response()->json(['message' => 'Promo code is expired or invalid'], 404);
+        }
+
+        return response()->json([
+            'discount' => $promo->discount,
+            'product' => $promo->product,
+            'cart_total' => $promo->cart_total,
+        ]);
+    }
 }

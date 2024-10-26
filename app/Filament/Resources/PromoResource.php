@@ -64,16 +64,16 @@ class PromoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Promo Code Name'),
+                    ->label('Название Промокода'),
 
                 Tables\Columns\TextColumn::make('discount')
-                    ->label('Discount (%)'),
+                    ->label('Скидка в %'),
 
                 Tables\Columns\TextColumn::make('product.name')
-                    ->label('Product (Optional)'),
+                    ->label('Бесплатный продукт'),
 
                 Tables\Columns\TextColumn::make('cart_total')
-                    ->label('Cart Total Threshold (Optional)'),
+                    ->label('Скидка только от ... рублей'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

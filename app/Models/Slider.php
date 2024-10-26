@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class Slider extends Model
 {
-    protected $fillable = ['name', 'image', 'slug', 'description', 'image2'];
+    protected $fillable = ['name', 'image', 'slug', 'description', 'image2', 'clickable'];
 
     protected static function boot()
     {

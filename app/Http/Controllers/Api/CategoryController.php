@@ -34,9 +34,9 @@ class CategoryController extends Controller
         return response()->json($category, 201);
     }
 
-    public function show(string $id)
+    public function show(string $slug)
     {
-        $category = Category::with('products')->findOrFail($id);
+        $category = Category::with('products')->where('slug', $slug)->firstOrFail();
         return response()->json($category);
     }
 

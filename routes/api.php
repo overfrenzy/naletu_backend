@@ -10,9 +10,15 @@ use App\Http\Controllers\Api\PromoController;
 
 // Публичные api (категории, продукты, слайдеры, тип продукта, промокоды)
 
-Route::apiResource('categories', CategoryController::class);
+Route::apiResource('categories', CategoryController::class)->except('show');
+Route::get('/categories/{slug}', [CategoryController::class, 'show']);
+
 Route::apiResource('products', ProductController::class);
-Route::apiResource('sliders', SliderController::class);
+
+Route::apiResource('sliders', SliderController::class)->except('show');
+Route::get('/sliders/{slug}', [SliderController::class, 'show']);
+
 Route::apiResource('quantity-types', QuantityTypeController::class);
+
 Route::apiResource('promos', PromoController::class);
 Route::post('/promos/validate', [PromoController::class, 'validatePromo']);

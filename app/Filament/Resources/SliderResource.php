@@ -8,6 +8,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Checkbox;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -32,10 +33,6 @@ class SliderResource extends Resource
                     ->required()
                     ->label('Название Слайдера'),
 
-                TextInput::make('slug')
-                    ->disabled()
-                    ->label('Slug'),
-
                 TextInput::make('description')
                     ->label('Описание'),
 
@@ -49,7 +46,11 @@ class SliderResource extends Resource
                     ->disk('public')
                     ->directory('slider-images')
                     ->nullable()
-                    ->label('Картинка 2'),
+                    ->label('Картинка с описанием'),
+
+                Checkbox::make('clickable')
+                    ->label('Кликабельно')
+                    ->default(false),
             ]);
     }
 
@@ -64,14 +65,14 @@ class SliderResource extends Resource
                     ->label('Картинка'),
 
                 Tables\Columns\ImageColumn::make('image2')
-                    ->label('Картинка 2'),
-
-                Tables\Columns\TextColumn::make('slug')
-                    ->label('Slug'),
+                    ->label('Картинка с описанием'),
 
                 Tables\Columns\TextColumn::make('description')
                     ->label('Описание')
                     ->limit(50),
+
+                Tables\Columns\BooleanColumn::make('clickable')
+                    ->label('Кликабельно'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

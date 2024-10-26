@@ -22,6 +22,7 @@ class SliderController extends Controller
             'description' => 'nullable|string',
             'image' => 'nullable|file|image|max:2048',
             'image2' => 'nullable|file|image|max:2048',
+            'clickable' => 'boolean',
         ]);
 
         if ($request->hasFile('image')) {
@@ -33,19 +34,25 @@ class SliderController extends Controller
         }
 
         $slider = Slider::create($validated);
-
         return response()->json($slider, 201);
     }
 
-    public function update(Request $request, string $id)
+    public function show(string $slug)
     {
-        $slider = Slider::findOrFail($id);
+        $slider = Slider::where('slug', $slug)->firstOrFail();
+        return response()->json($slider);
+    }
+
+    public function update(Request $request, string $slug)
+    {
+        $slider = Slider::where('slug', $slug)->firstOrFail();
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|file|image|max:2048',
             'image2' => 'nullable|file|image|max:2048',
+            'clickable' => 'boolean',
         ]);
 
         if ($request->hasFile('image')) {
@@ -63,7 +70,22 @@ class SliderController extends Controller
         }
 
         $slider->update($validated);
-
         return response()->json($slider);
+    }
+
+    public function destroy(string $slug)
+    {
+        $slider = Slider::where('slug', $slug)->firstOrFail();
+
+        if ($slider->image) {
+            Storage::disk('public')->delete($slider->image);
+        }
+
+        if ($slider->image2) {
+            Storage::disk('public')->delete($slider->image2);
+        }
+
+        $slider->delete();
+        return response()->json(null, 204);
     }
 }

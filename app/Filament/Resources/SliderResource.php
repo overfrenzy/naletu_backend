@@ -33,7 +33,7 @@ class SliderResource extends Resource
                     ->required()
                     ->label('Название Слайдера'),
 
-                TextInput::make('description')
+                Textarea::make('description')
                     ->label('Описание')
                     ->dehydrateStateUsing(fn ($state) => nl2br($state)),
 

@@ -7,6 +7,7 @@ use App\Models\Slider;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Checkbox;
 use Filament\Resources\Resource;

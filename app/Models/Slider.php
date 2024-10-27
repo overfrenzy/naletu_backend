@@ -73,14 +73,32 @@ class Slider extends Model
     public function setImageAttribute($value)
     {
         if ($value) {
+            // Если установлено новое изображение, удалить старое
+            if (!empty($this->attributes['image']) && $this->attributes['image'] !== $value) {
+                Storage::disk('public')->delete($this->attributes['image']);
+            }
             $this->attributes['image'] = ltrim(str_replace('public/', '', $value), '/');
+        } else {
+            // Если значение не указано, удалить существующее изображение.
+            if (!empty($this->attributes['image'])) {
+                Storage::disk('public')->delete($this->attributes['image']);
+            }
+            $this->attributes['image'] = null;
         }
     }
 
     public function setImage2Attribute($value)
     {
         if ($value) {
+            if (!empty($this->attributes['image2']) && $this->attributes['image2'] !== $value) {
+                Storage::disk('public')->delete($this->attributes['image2']);
+            }
             $this->attributes['image2'] = ltrim(str_replace('public/', '', $value), '/');
+        } else {
+            if (!empty($this->attributes['image2'])) {
+                Storage::disk('public')->delete($this->attributes['image2']);
+            }
+            $this->attributes['image2'] = null;
         }
     }
 }

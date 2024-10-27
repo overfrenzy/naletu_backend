@@ -7,7 +7,7 @@ use App\Models\Slider;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Checkbox;
 use Filament\Resources\Resource;
@@ -34,9 +34,13 @@ class SliderResource extends Resource
                     ->required()
                     ->label('Название Слайдера'),
 
-                Textarea::make('description')
+                RichEditor::make('description')
                     ->label('Описание')
-                    ->dehydrateStateUsing(fn ($state) => nl2br($state)),
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                    ]),
 
                 FileUpload::make('image')
                     ->required()

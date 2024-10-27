@@ -67,7 +67,15 @@ class Category extends Model
     public function setImageAttribute($value)
     {
         if ($value) {
+            if (!empty($this->attributes['image']) && $this->attributes['image'] !== $value) {
+                Storage::disk('public')->delete($this->attributes['image']);
+            }
             $this->attributes['image'] = ltrim(str_replace('public/', '', $value), '/');
+        } else {
+            if (!empty($this->attributes['image'])) {
+                Storage::disk('public')->delete($this->attributes['image']);
+            }
+            $this->attributes['image'] = null;
         }
     }
 

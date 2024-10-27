@@ -34,7 +34,8 @@ class SliderResource extends Resource
                     ->label('Название Слайдера'),
 
                 TextInput::make('description')
-                    ->label('Описание'),
+                    ->label('Описание')
+                    ->dehydrateStateUsing(fn ($state) => nl2br($state)),
 
                 FileUpload::make('image')
                     ->required()

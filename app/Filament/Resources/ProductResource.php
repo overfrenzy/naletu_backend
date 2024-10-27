@@ -37,7 +37,8 @@ class ProductResource extends Resource
 
                 Textarea::make('description')
                     ->required()
-                    ->label('Описание'),
+                    ->label('Описание')
+                    ->dehydrateStateUsing(fn ($state) => nl2br($state)),
 
                 TextInput::make('mrp')
                     ->required()
